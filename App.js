@@ -102,6 +102,16 @@ app.post('/InventoryData', async (request, response) => {
 })
 //-----------------------------------------------------------------------------------------
 
+//----------------------Serving the Login Page on LogOut click-----------
+app.post('/LoginPage', async (request, response) => {
+    try {
+        response.sendFile(path.join(__dirname, 'public/index.html'));
+    } catch (error) {
+        response.send(error);
+    }
+})
+//-----------------------------------------------------------------------
+
 /*1*/
 async function ReadFromGoogleSheetDB() {
     const privateKey = fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS);
