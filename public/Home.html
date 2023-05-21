@@ -40,10 +40,14 @@
       border-color: #0062cc;
     }
 
+    .containerHidden {
+      display: none;
+    }
+
     .container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(4, 80px);
+      grid-template-rows: repeat(3, 80px);
       grid-gap: 10px;
       margin: auto;
       align-items: center;
@@ -172,61 +176,69 @@
 
 <body>
   <div class="topnav" id="myTopnav">
-    <a id="Home" class="active" href=".">Home</a>
-    <a id="History" href="">History</a>
+    <a id="Home" class="active" href=".">Inventory</a>
+    <a id="History" href="">Billing</a>
     <a id="logout" class="logout" href="">Log out</a>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
       <i class="fa fa-bars"></i>
     </a>
   </div>
+  <div style="text-align: center;" class="item item-1">
+    <label for="Product">Please select a Product</label>
+    <select id="Product" name="Product">
+      <option value="Default" selected>--</option>
+    </select>
+  </div>
   <form>
-    <div class="container">
+    <div class="containerHidden" id="container">
       <div class="item item-1">
         <div class="form-group my-1 mx-5">
-          <label for="date">Date</label>
-          <input type="date" class="form-control" id="date">
+          <label for="PurchaseCost">Purchase Cost</label>
+          <input type="text" id="PurchaseCost" name="PurchaseCost" pattern="[0-9]+([\.][0-9]+)?" required />
         </div>
       </div>
       <div class="item item-2">
         <div class="form-group my-1 mx-5">
-          <label for="wakeup">Wake up time</label>
-          <input type="time" class="form-control" id="wakeup">
+          <label for="PurchaseQuantity">Purchase Quantity</label>
+          <input type="number" id="PurchaseQuantity" name="PurchaseQuantity" pattern="[0-9]+" required />
         </div>
       </div>
       <div class="item item-3">
         <div class="form-group my-1 mx-5">
-          <label for="sleep">Sleep time</label>
-          <input type="time" class="form-control" id="sleep">
+          <label for="PurchaseUnit">Unit</label>
+          <select id="PurchaseUnit" name="PurchaseUnit">
+            <option value="Default" selected>--</option>
+          </select>
         </div>
       </div>
       <div class="item item-4">
         <div class="form-group my-1 mx-5">
-          <label for="SleepType">Sleep Type</label>
-          <select id="SleepType" name="SleepType">
-            <option value="EOD" selected>EOD</option>
-            <option value="Mid Day">Mid Day</option>
+          <label for="WHouseLocation">Warehouse Location</label>
+          <select id="WHouseLocation" name="WHouseLocation">
+            <option value="Location1" selected>Location 1</option>
+            <option value="Location2">Location 2</option>
           </select>
         </div>
       </div>
       <div class="item item-5">
         <div class="form-group my-1 mx-5">
-          <label for="SleepHrs">Sleep hrs</label>
-          <input type="text" id="SleepHrs" name="SleepHrs" pattern="[0-9]+([\.][0-9]+)?" required />
+          <!-- <label for="SleepHrs">Sleep hrs</label>
+          <input type="text" id="SleepHrs" name="SleepHrs" pattern="[0-9]+([\.][0-9]+)?" required /> -->
         </div>
       </div>
       <div class="item item-6">
         <div class="form-group my-1 mx-5">
-          <label for="SleepIndex">Sleep Index</label>
-          <input type="text" id="SleepIndex" name="SleepIndex" pattern="[0-9]+([\.][0-9]+)?" required />
+          <!-- <label for="SleepIndex">Sleep Index</label>
+          <input type="text" id="SleepIndex" name="SleepIndex" pattern="[0-9]+([\.][0-9]+)?" required /> -->
         </div>
       </div>
       <div class="item item-7">
         <div style="height: 90%;" class="form-group my-1 mx-5">
-          <label for="DreamNote">Dream Note</label>
-          <input style="width: 100%; height: 100%;" type="text" id="DreamNote" name="DreamNote">
+          <label for="Notes">Notes</label>
+          <input style="width: 100%; height: 100%;" type="text" id="Notes" name="Notes">
         </div>
       </div>
-      <div class="item item-8">
+      <!-- <div class="item item-8">
         <div class="form-group my-1 mx-5">
           <label for="MD">MD</label>
           <input type="number" id="MD" name="MD" pattern="[0-9]+" required />
@@ -236,15 +248,14 @@
         <div class="form-group my-1 mx-5">
           <label for="MDTime">MD time</label>
           <input type="time" class="form-control" id="MDTime">
-        </div>
+        </div> -->
       </div>
     </div>
     <div style="text-align: center;" class="my-4">
-      <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
-      <button type="submit" class="btn btn-primary" id="update-button" style="display: none;">Update</button>
+      <button type="submit" class="btn btn-primary" id="submit-button" style="display: none;">Submit</button>
     </div>
   </form>
-  <div style="text-align: center;" class="my-1 green" id="Status">
+  <div style="text-align: center; display: none" class="my-1 green" id="Status">
   </div>
   <script src="Home.js"></script>
 </body>
