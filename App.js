@@ -59,7 +59,7 @@ app.post('/ProductData', async (request, response) => {
 })
 //-----------------------------------------------------------------------------------------
 
-//--------------------Serving the Unit value for selected product-----------------------
+//--------------------Serving the Unit/Selling price value for selected product-----------------------
 app.post('/UnitData', async (request, response) => {
     try {
         const vProductList = await ReadFromDB("Products");
@@ -67,7 +67,8 @@ app.post('/UnitData', async (request, response) => {
             if (vProductList[i][0] == request.body.SelectedProduct) {
                 response.json({
                     status: "successful",
-                    "Unit": vProductList[i][1]
+                    "Unit": vProductList[i][1],
+                    "SellingPrice": vProductList[i][3]
                 })
                 break
             }
@@ -76,10 +77,9 @@ app.post('/UnitData', async (request, response) => {
         response.send(error);
     }
 })
-//-----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
 
-
-//--------------------Serving the Unit value for selected product-----------------------
+//--------------------Writting Inventory data into the database-------------------------
 app.post('/InventoryData', async (request, response) => {
     try {
         let vData = request.body;
@@ -102,10 +102,53 @@ app.post('/InventoryData', async (request, response) => {
 })
 //-----------------------------------------------------------------------------------------
 
+//--------------------Writting Billing data into the database-------------------------
+app.post('/BillingData', async (request, response) => {
+    try {
+        let vData = request.body;
+        let vDataArray = [[vData["Timestamp"]
+            ,vData["Product Name"], vData["Selling Price"]
+            ,vData["Selling Quantity"], vData["Unit"]
+            ,vData["Warehouse Location"], vData["Note"]
+        ]];
+        const vUpdatedRow = await writeToGoogleSheet(vDataArray, 1,'Billing');
+        const vUpdatedData = await ReadFromDB(vUpdatedRow);
+        const vHeaderData = await ReadFromDB("Billing!A1:G1");
+            response.json({
+                status: "successful",
+                "Row updated": vUpdatedRow,
+                "Data": [vHeaderData[0],vUpdatedData[0]]
+            })
+    } catch (error) {
+        response.send(error);
+    }
+})
+//-----------------------------------------------------------------------------------------
+
 //----------------------Serving the Login Page on LogOut click-----------
 app.post('/LoginPage', async (request, response) => {
     try {
         response.sendFile(path.join(__dirname, 'public/index.html'));
+    } catch (error) {
+        response.send(error);
+    }
+})
+//-----------------------------------------------------------------------
+
+//----------------------Serving the Billing Page ------------------------
+app.post('/BillingPage', async (request, response) => {
+    try {
+        response.sendFile(path.join(__dirname, 'public/Billing.html'));
+    } catch (error) {
+        response.send(error);
+    }
+})
+//-----------------------------------------------------------------------
+
+//----------------------Serving the Inventory Page ------------------------
+app.post('/InventoryPage', async (request, response) => {
+    try {
+        response.sendFile(path.join(__dirname, 'public/Home2.html'));
     } catch (error) {
         response.send(error);
     }

@@ -1,74 +1,3 @@
-/*Fetching data from google sheet and getting all possible products in the dropdown*/
-let vSelect = document.getElementById('Product');
-let vUnit = document.getElementById('PurchaseUnit');
-const options = {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    }
-}
-
-fetch('/ProductData', options).then((res) => {  //POST method to send and receive data from server
-    return res.json();
-}).then((response) => {
-    for (let i = 0; i < response.Products.length; i++) {
-        let opt = document.createElement('option');
-        opt.value = response.Products[i];
-        opt.innerHTML = response.Products[i];
-        vSelect.appendChild(opt);
-    }
-    for (let i = 0; i < response.Units.length; i++) {
-        let opt = document.createElement('option');
-        opt.value = response.Units[i];
-        opt.innerHTML = response.Units[i];
-        vUnit.appendChild(opt);
-    }
-});
-
-/*Events to be triggered post selection of a product from dropdown*/
-vSelect.addEventListener("change", () => {
-    if (vSelect.value == 'Default') {
-        let vContainer = document.getElementById("container");
-        vContainer.className = "containerHidden";
-        document.querySelector("#submit-button").style = 'display: none';
-    } else {
-        let vContainer = document.getElementById("container");
-        vContainer.className = "container";
-        document.querySelector("#submit-button").style = 'display: inline-block';
-    }
-
-    let vSelectedProduct = document.getElementById('Product').value
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ "SelectedProduct": vSelectedProduct })
-    }
-
-    fetch('/UnitData', options).then((res) => {  //POST method to send and receive data from server
-        return res.json();
-    }).then((response) => {
-        document.getElementById('PurchaseUnit').value = response.Unit
-    });
-
-    /***************Resetting values post change in product selection******************************/
-    document.querySelector("#PurchaseCost").value = "";
-    document.querySelector("#PurchaseQuantity").value = "";
-    document.querySelector("#WHouseLocation").value = "";
-    document.querySelector("#Notes").value = "";
-    if (document.querySelector("#HistoryDataDiv")) {
-        document.querySelector("#HistoryDataDiv").remove();
-        document.querySelector("#Status").style = 'display: none';
-    };
-    if (vSelect.value == 'Default') {
-        document.querySelector("#submit-button").style = 'display: none';
-    } else {
-        document.querySelector("#submit-button").style = 'display: inline-block';
-    }
-    /*********************************************************************************************/
-})
-
 /*Events to be triggered on Submit button click to write data in DB*/
 document.querySelector("#submit-button").addEventListener("click", (event) => {
     event.preventDefault();
@@ -141,6 +70,7 @@ document.querySelector("#submit-button").addEventListener("click", (event) => {
             });
             vTable.innerHTML = table;
             document.querySelector("#submit-button").style = 'display: none';
+            let vSelect = document.getElementById('Product');
             vSelect.value = 'Default';
             let vContainer = document.getElementById("container");
             vContainer.className = "containerHidden";
