@@ -81,19 +81,20 @@ document.querySelector("#submit-button").addEventListener("click", (event) => {
 
 /*Events for log out click*/
 document.querySelector("#logout").addEventListener("click", (event) => {
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }
-    fetch('/LoginPage', options).then((res) => {  //POST method to receive HTML page from server
-        return res.text();
-    }).then((response) => {
-        document.open('text/html');
-        document.write(response);
-        document.close();
-    });
+    location.reload();
+    // const options = {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     }
+    // }
+    // fetch('/LoginPage', options).then((res) => {  //POST method to receive HTML page from server
+    //     return res.text();
+    // }).then((response) => {
+    //     document.open('text/html');
+    //     document.write(response);
+    //     document.close();
+    // });
 
 });
 
