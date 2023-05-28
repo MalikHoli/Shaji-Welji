@@ -95,15 +95,6 @@ document.querySelector("#submit-button").addEventListener("click", (event) => {
     WriteRow["Warehouse Location"] = document.querySelector("#WHouseLocation").value;
     WriteRow["Note"] = document.querySelector("#Notes").value;
 
-    let vConfirm = confirm(`Are you sure you want to submit below data
-    Product Name: ${WriteRow["Product Name"]}
-    Purchase Cost: ${WriteRow["Purchase Cost"]}
-    Purchase Quantity: ${WriteRow["Purchase Quantity"]}
-    Unit: ${WriteRow["Unit"]}
-    Warehouse Location: ${WriteRow["Warehouse Location"]}
-    Note: ${WriteRow["Note"]}`);
-
-    if (vConfirm === true) {
         const options = {
             method: "POST",
             headers: {
@@ -145,8 +136,6 @@ document.querySelector("#submit-button").addEventListener("click", (event) => {
             let vContainer = document.getElementById("container");
             vContainer.className = "containerHidden";
         });
-    }
-
 });
 
 /*Events for log out click*/
@@ -231,15 +220,17 @@ document.querySelector("#History").addEventListener("click", (event) => {
             document.querySelector("#SellingQuantity").value = "";
             document.querySelector("#SellingWHouseLocation").value = "";
             document.querySelector("#SellingNotes").value = "";
-            if (document.querySelector("#HistoryDataDiv")) {
-                document.querySelector("#HistoryDataDiv").remove();
-                document.querySelector("#Status").style = 'display: none';
-                document.querySelector("#Status2").style = 'display: none';
-            };
+
+            document.querySelector("#HistoryDataDiv").style = 'display: none';
+            document.querySelector("#Status").style = 'display: none';
+            document.querySelector("#Status2").style = 'display: none';
+            
             if (vSellingSelect.value == 'Default') {
                 document.querySelector("#submit-button").style = 'display: none';
             } else {
                 document.querySelector("#submit-button").style = 'display: inline-block';
+                document.querySelector("#order-completediv").style = 'display: none';
+
             }
             /*********************************************************************************************/
         })

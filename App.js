@@ -6,6 +6,7 @@ const express = require('express');
 const app = express();
 const bcrypt = require('bcrypt');
 const path = require('path');
+const { Console } = require("console");
 
 
 
@@ -84,18 +85,38 @@ app.post('/InventoryData', async (request, response) => {
     try {
         let vData = request.body;
         let vDataArray = [[vData["Timestamp"]
-            ,vData["Product Name"], vData["Purchase Cost"]
-            ,vData["Purchase Quantity"], vData["Unit"]
-            ,vData["Warehouse Location"], vData["Note"]
+            , vData["Product Name"], vData["Purchase Cost"]
+            , vData["Purchase Quantity"], vData["Unit"]
+            , vData["Warehouse Location"], vData["Note"]
         ]];
-        const vUpdatedRow = await writeToGoogleSheet(vDataArray, 1,'Inventory');
+        const vUpdatedRow = await writeToGoogleSheet(vDataArray, 1, 'Inventory');
         const vUpdatedData = await ReadFromDB(vUpdatedRow);
         const vHeaderData = await ReadFromDB("Inventory!A1:G1");
-            response.json({
-                status: "successful",
-                "Row updated": vUpdatedRow,
-                "Data": [vHeaderData[0],vUpdatedData[0]]
-            })
+        response.json({
+            status: "successful",
+            "Row updated": vUpdatedRow,
+            "Data": [vHeaderData[0], vUpdatedData[0]]
+        })
+    } catch (error) {
+        response.send(error);
+    }
+})
+//-----------------------------------------------------------------------------------------
+
+//--------------------Writting Customer data into the database-------------------------
+app.post('/CustomerData', async (request, response) => {
+    try {
+        let vData = request.body;
+        let vDataArray = [[vData["Timestamp"]
+            , vData["Customer Name"], vData["Mobile No"]
+        ]];
+        vDataArray[0].unshift(`Central${await ReadFromGoogleSheet('Customer') - 1}`);
+        const vUpdatedRow = await writeToGoogleSheet(vDataArray, 1, 'Customer');
+        const vUpdatedData = await ReadFromDB(vUpdatedRow);
+        response.json({
+            status: "successful",
+            "UpdatedData": vUpdatedData
+        })
     } catch (error) {
         response.send(error);
     }
@@ -107,18 +128,44 @@ app.post('/BillingData', async (request, response) => {
     try {
         let vData = request.body;
         let vDataArray = [[vData["Timestamp"]
-            ,vData["Product Name"], vData["Selling Price"]
-            ,vData["Selling Quantity"], vData["Unit"]
-            ,vData["Warehouse Location"], vData["Note"]
+            , vData["Product Name"], vData["Selling Price"]
+            , vData["Selling Quantity"], vData["Unit"]
+            , vData["Warehouse Location"], vData["Note"], vData["Selling Cost"]
         ]];
-        const vUpdatedRow = await writeToGoogleSheet(vDataArray, 1,'Billing');
+        vOrderNo = await ReadFromDB(`Customer!A${await ReadFromGoogleSheet('Customer') - 1}`) 
+        vDataArray[0].unshift(vOrderNo[0][0])
+        const vUpdatedRow = await writeToGoogleSheet(vDataArray, 1, 'Billing');
         const vUpdatedData = await ReadFromDB(vUpdatedRow);
-        const vHeaderData = await ReadFromDB("Billing!A1:G1");
-            response.json({
-                status: "successful",
-                "Row updated": vUpdatedRow,
-                "Data": [vHeaderData[0],vUpdatedData[0]]
-            })
+        const vHeaderData = await ReadFromDB("Billing!A1:I1");
+        response.json({
+            status: "successful",
+            "Row updated": vUpdatedRow,
+            "Data": [vHeaderData[0], vUpdatedData[0]]
+        })
+    } catch (error) {
+        response.send(error);
+    }
+})
+//-----------------------------------------------------------------------------------------
+
+//--------------------Writting Customer data into the database-------------------------
+app.post('/GenerateBill', async (request, response) => {
+    try {
+        const vOrderList = await ReadFromDB("Billing");
+        let vBillValue = 0;
+        let vBillingTable = [];
+        for (let i = 1; i <= vOrderList.length - 1; i++) {
+            if (vOrderList[i][0] == request.body.OrderNo) {
+                vBillValue = Number(vBillValue) + Number(vOrderList[i][8])
+                vBillingTable.push([vOrderList[i][2],vOrderList[i][3],vOrderList[i][4],vOrderList[i][5],vOrderList[i][8]])
+            }
+        }
+        vBillingTable.unshift([vOrderList[0][2],vOrderList[0][3],vOrderList[0][4],vOrderList[0][5],vOrderList[0][8]])
+        response.json({
+            status: "successful",
+            "BillValue": vBillValue,
+            "BillingTable": vBillingTable
+        })
     } catch (error) {
         response.send(error);
     }

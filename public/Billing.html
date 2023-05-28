@@ -40,10 +40,6 @@
       border-color: #0062cc;
     }
 
-    .containerHidden {
-      display: none;
-    }
-
     .container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -51,6 +47,23 @@
       grid-gap: 10px;
       margin: auto;
       align-items: center;
+    }
+
+    .containerHidden {
+      display: none;
+    }
+
+    .container2 {
+      display: grid;
+      grid-template-columns: repeat(2, 0fr);
+      grid-template-rows: repeat(1, 80px);
+      grid-gap: 10px;
+      margin: auto;
+      align-items: center;
+    }
+
+    .containerHidden2 {
+      display: none;
     }
 
     .item-7 {
@@ -133,6 +146,12 @@
         align-items: center;
       }
 
+      .container2 {
+        display: block;
+        margin: auto;
+        align-items: center;
+      }
+
       .item {
         margin: 20px 0px;
       }
@@ -161,6 +180,12 @@
         align-items: center;
       }
 
+      .container2 {
+        display: block;
+        margin: auto;
+        align-items: center;
+      }
+
       .item {
         margin: 20px 0px;
       }
@@ -183,7 +208,21 @@
       <i class="fa fa-bars"></i>
     </a>
   </div>
-  <div style="text-align: center;" class="item item-1">
+  <div class="container2" id="container2">
+    <div class="item item-1">
+      <div class="form-group my-1 mx-5">
+        <label for="CustomerName">Customer Name</label>
+        <input type="text" id="CustomerName" name="CustomerName" />
+      </div>
+    </div>
+    <div class="item item-2">
+      <div class="form-group my-1 mx-5">
+        <label for="CustomerMobile">Mobile No</label>
+        <input type="text" id="CustomerMobile" name="CustomerMobile" />
+      </div>
+    </div>
+  </div>
+  <div style="text-align: center; display: none" class="item item-1" id="SelectProductDiv">
     <label for="SellingProduct">Please select a Product</label>
     <select id="SellingProduct" name="SellingProduct">
       <option value="Default" selected>--</option>
@@ -238,26 +277,27 @@
           <input style="width: 100%; height: 100%;" type="text" id="SellingNotes" name="SellingNotes">
         </div>
       </div>
-      <!-- <div class="item item-8">
-        <div class="form-group my-1 mx-5">
-          <label for="MD">MD</label>
-          <input type="number" id="MD" name="MD" pattern="[0-9]+" required />
-        </div>
-      </div>
-      <div class="item item-9">
-        <div class="form-group my-1 mx-5">
-          <label for="MDTime">MD time</label>
-          <input type="time" class="form-control" id="MDTime">
-        </div> -->
     </div>
     </div>
     <div style="text-align: center;" class="my-4">
       <button type="submit" class="btn btn-primary" id="submit-button" style="display: none;">Submit</button>
     </div>
   </form>
-  <div style="text-align: center; display: none" class="my-1 green" id="Status2">
+  <div style="text-align: left;" class="my-4 mx-5">
+    <button type="submit" class="btn btn-primary" id="order-button">Create Order</button>
   </div>
   <div style="text-align: center; display: none" class="my-1 green" id="Status">
+  </div>
+  <div style="display: none" id="HistoryDataDiv"></div>
+  <div style="display: none" class="my-4 mx-5" id="order-completediv">
+    <button type="submit" class="btn btn-primary" id="order-complete">Generate Bill</button>
+  </div>
+  <div style="display: none" id="FinalBillDiv"></div>
+  <div style="text-align: center; display: none" class="my-1 green" id="Status2">
+  </div>
+  <div style="display: none" class="my-4 mx-5" id="Printdiv">
+    <button type="submit" class="btn btn-primary" id="Print">Print</button>
+    <button type="submit" class="btn btn-primary" id="Next">Next</button>
   </div>
   <script src="Billing.js"></script>
 </body>
