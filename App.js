@@ -60,6 +60,26 @@ app.post('/ProductData', async (request, response) => {
 })
 //-----------------------------------------------------------------------------------------
 
+//--------------------Serving the Product based on barcode scan---------------------
+app.post('/BarcodeProductData', async (request, response) => {
+    try {
+        const vProductList = await ReadFromDB("Products");
+        for (let i = 1; i <= vProductList.length - 1; i++) {
+            if (vProductList[i][4] == request.body.SelectedProductCode) {
+                response.json({
+                    status: "successful",
+                    "Product": vProductList[i][0]
+                })
+                break
+            }
+        }
+    } catch (error) {
+        response.send(error);
+    }
+})
+//---------------------------------------------------------------------------------------
+
+
 //--------------------Serving the Unit/Selling price value for selected product-----------------------
 app.post('/UnitData', async (request, response) => {
     try {

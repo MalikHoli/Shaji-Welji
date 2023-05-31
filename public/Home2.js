@@ -1,6 +1,7 @@
 /*Events to be triggered on Submit button click to write data in DB*/
 document.querySelector("#submit-button").addEventListener("click", (event) => {
     event.preventDefault();
+    document.querySelector("#submit-button").style = 'display: none';
     let WriteRow = {
         "Timestamp": "",
         "Product Name": "",
@@ -60,7 +61,7 @@ document.querySelector("#submit-button").addEventListener("click", (event) => {
                 table += `</tr>`
             });
             vTable.innerHTML = table;
-            document.querySelector("#submit-button").style = 'display: none';
+            // document.querySelector("#submit-button").style = 'display: none';
             let vSelect = document.getElementById('Product');
             vSelect.value = 'Default';
             let vContainer = document.getElementById("container");
@@ -115,7 +116,7 @@ document.querySelector("#History").addEventListener("click", (event) => {
             }
         })
         /*Events to be triggered post selection of a product from dropdown*/
-        vSellingSelect.addEventListener("change", () => {
+        vSellingSelect.addEventListener("click", () => {
             if (vSellingSelect.value == 'Default') {
                 let vContainer = document.getElementById("container");
                 vContainer.className = "containerHidden";
